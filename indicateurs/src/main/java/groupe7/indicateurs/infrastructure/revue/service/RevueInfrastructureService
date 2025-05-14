@@ -1,0 +1,14 @@
+package groupe7.indicateurs.infrastructure.revue.service;
+
+import org.springframework.stereotype.Service;
+
+import groupe7.indicateurs.domain.revue.model.Revue;
+
+@Service
+public class RevueInfrastructureService {
+    // Méthodes pour interagir avec la base de données ou d'autres services externes
+    public Revue findRevueById(Long id) {
+        // Logique pour trouver une revue par ID (par exemple via un repository)
+        return null;
+    }
+}

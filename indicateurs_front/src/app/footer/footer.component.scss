@@ -1,0 +1,18 @@
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #1d99ff, #1565c0);
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  padding: 10px 0;
+  z-index: 10; 
+}
+
+footer img {
+  width: auto;
+  height: auto;
+  max-width: 100px; 
+  max-height: 35px; 
+  object-fit: contain;
+}

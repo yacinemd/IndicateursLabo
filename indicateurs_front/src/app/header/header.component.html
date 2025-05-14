@@ -1,0 +1,48 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="drawer.toggle()" aria-label="Ouvrir le menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="toolbar-title" style="cursor: pointer;" (click)="navigateTo('');drawer.close()">
+    <img src="assets/images/logo2.png" alt="Logo" class="logo">
+  </span>
+  
+
+
+  
+</mat-toolbar>
+
+<mat-drawer-container class="container" >
+  
+  <mat-drawer #drawer  class="sidenav" mode="side">
+    <mat-nav-list>
+      <mat-list-item (click)="navigateTo('/contact'); drawer.close()">
+        <mat-icon matListIcon class="icon">contacts</mat-icon>
+        <span matLine class="icon">Contact</span>
+      </mat-list-item>
+
+      <mat-list-item (click)="navigateTo('/statistiques'); drawer.close()">
+        <mat-icon matListIcon class="icon">show_chart</mat-icon>
+        <span matLine class="icon">Statistiques</span>
+      </mat-list-item>
+    
+    <mat-list-item (click)="navigateTo('/map'); drawer.close()">
+      <mat-icon matListIcon class="icon">map</mat-icon>
+      <span matLine class="icon">Carte</span>
+    </mat-list-item>
+    <mat-list-item (click)="navigateTo('/quartile'); drawer.close()">
+      <mat-icon matListIcon class="icon">bar_chart</mat-icon>
+      <span matLine class="icon">Quartiles</span>
+    </mat-list-item>
+    <mat-list-item (click)="navigateTo('/equipes'); drawer.close()">
+      <mat-icon matListIcon class="icon">person</mat-icon>
+      <span matLine class="icon">Equipe</span>
+    </mat-list-item>
+  </mat-nav-list>
+  </mat-drawer>
+  <div class="sidenav-content" (click)="drawer.close()">
+    <router-outlet></router-outlet>
+  </div>
+
+ 
+</mat-drawer-container>

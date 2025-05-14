@@ -1,0 +1,390 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: visible; 
+}
+
+h2 {
+  color: #1c1818;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: flex-end;
+  position: relative;
+  z-index: 10;
+}
+
+
+
+label {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.search-input {
+  padding: 10px 12px; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  height: 44px; 
+  box-sizing: border-box;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  height: 44px; 
+  box-sizing: border-box;
+  margin-left: 0;
+  align-self: flex-end; 
+}
+
+.search-button:hover {
+  background-color: #3367d6;
+}
+
+.loading {
+  text-align: center;
+  margin: 20px 0;
+  font-style: italic;
+  color: #666;
+}
+
+.error-message {
+  color: #d32f2f;
+  padding: 10px;
+  border-left: 4px solid #d32f2f;
+  background-color: rgba(211, 47, 47, 0.1);
+  margin: 20px 0;
+}
+
+.revue-info {
+  padding: 15px;
+  background-color: #e8f0fe;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.revue-info h3 {
+  margin-top: 0;
+  color: #1a73e8;
+}
+
+.revue-info p {
+  margin-bottom: 0;
+  color: #5f6368;
+}
+
+.best-quartiles-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+  display: flex;
+  margin-top: 20px;
+  position: relative;
+  padding-bottom: 40px;
+  overflow: hidden;
+}
+
+.y-axis-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 15px;
+  height: 100px;
+  margin-top: 5px;
+}
+
+.y-label {
+  height: 25px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+.chart {
+  overflow: visible;
+}
+
+.grid-line {
+  stroke: #e0e0e0;
+  stroke-width: 1;
+}
+
+.line-path {
+  fill: none;
+  stroke: #4285f4;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.data-point {
+  stroke: white;
+  stroke-width: 2;
+  cursor: pointer;
+  transition: r 0.2s;
+}
+
+.data-point:hover {
+  r: 8;
+}
+
+.year-label {
+  font-size: 12px;
+  fill: #333;
+  font-weight: 500;
+}
+
+
+
+
+.point-details {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.point-details p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.heatmap-container {
+  margin-top: 30px;
+}
+
+.heatmap {
+  display: flex;
+  margin-top: 20px;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
+  padding-top: 5px;
+  min-width: 200px;
+}
+
+.domaine-label {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 340px;
+  color: #333;
+  padding-right: 10px;
+}
+
+.grid-container {
+  flex: 1;
+  overflow-x: auto;
+  border-left: 1px solid #ddd;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.heatmap-row {
+  display: flex;
+  height: 30px;
+}
+
+.heatmap-cell {
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.heatmap-cell:hover {
+  opacity: 0.8;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.heatmap-cell.has-data {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.heatmap-cell:not(.has-data) {
+  background-color: transparent !important;
+  border: none;
+}
+
+.x-axis {
+  display: flex;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  height: 40px;
+}
+
+.x-axis .year-label {
+  width: 30px;
+  margin: 1px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  transform: rotate(0);
+  height: 20px;
+  white-space: nowrap;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.cell-details {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  color: #212121;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.cell-details h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #1a237e;
+  font-weight: 700;
+}
+
+.cell-details p {
+  margin: 6px 0;
+  font-weight: 500;
+}
+
+.legend {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.legend h4 {
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 600;
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  padding: 3px 6px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.revue-list {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow-y: auto;
+  margin-top: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  color: #333;
+  max-height: 300px;
+  margin-bottom: 20px;
+}
+
+.revue-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.revue-list li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #f0f0f0;
+  width: 100%;
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.revue-list li:hover {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
+
+
+.search-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+
+.reset-button {
+  background-color: #17a2b8; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+  transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+  background-color: #138496; 
+}

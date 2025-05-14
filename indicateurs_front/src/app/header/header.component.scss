@@ -1,0 +1,117 @@
+
+.container {
+  height: 100vh;
+  background-color: white;
+}
+
+mat-toolbar {
+  background-color: #1976d2;
+  color: white;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  z-index: 1000;
+}
+
+mat-toolbar button.mat-icon-button {
+  color: white;
+}
+
+.logo {
+  height: 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+@media (min-width: 2000px) {
+  .logo {
+    height: 40px;
+  }
+}
+
+@media (max-width: 1599px) {
+  .logo {
+    height: 33px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .logo {
+    height: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .logo {
+    height: 22px;
+  }
+}
+
+@media (max-width: 479px) {
+  .logo {
+    height: 20px;
+  }
+}
+
+.sidenav {
+  position: fixed;
+  top: 64px; 
+  left: 0;
+  height: calc(100% - 64px); 
+  width: 250px;
+  background-color: white;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.sidenav-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  transition: margin-left 0.3s ease;
+}
+
+
+mat-list-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  padding: 10px 15px;
+  color: #1976d2;
+}
+
+mat-list-item:hover {
+  background-color: #e3f2fd;
+  transform: translateX(4px);
+  color: #1976d2;
+}
+
+.icon {
+  color: #1976d2;
+}
+
+@media (max-width: 768px) {
+  .sidenav {
+    width: 200px;
+  }
+
+  .sidenav-content {
+    width: calc(100vw - 200px); 
+  }
+
+  .logo {
+    height: 30px; 
+  }
+}
+
+router-outlet {
+  display: none;
+}

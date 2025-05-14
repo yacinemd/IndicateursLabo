@@ -1,0 +1,42 @@
+<div class="layout" role="main" aria-label="Carte et filtres des publications">
+    <aside class="filter-sidebar" role="complementary" aria-label="Filtres des publications">
+      <form (ngSubmit)="onFilterSubmit()" class="filter-form" aria-labelledby="filter-legend">
+        <fieldset>
+          <legend id="filter-legend"><br>Filtrer les Publications</legend>
+  
+          <div class="form-group">
+            <label for="type">Sélectionnez le type de publication :</label>
+            <select id="type" [(ngModel)]="selectedType" name="type" aria-describedby="type-desc">
+              <option value="article">Article</option>
+              <option value="conference">Conférence</option>
+              <option value="livre">Livre</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="year">Année de :</label>
+            <input type="number" id="year" [(ngModel)]="selectedYear" name="year" placeholder="ex : 2000" aria-label="Année de début">
+            <label for="year2">à :</label>
+            <input type="number" id="year2" [(ngModel)]="selectedYear2" name="year2" placeholder="ex : 2024" aria-label="Année de fin">
+          </div>
+  
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" aria-label="Appliquer les filtres">Filtrer</button>
+            <button type="button" (click)="resetFilters()" class="btn btn-secondary" aria-label="Réinitialiser les filtres">Réinitialiser</button>
+          </div>
+        </fieldset>
+      </form>
+  
+      
+    </aside>
+  
+    <main class="content-area">
+      <div id="map" class="map" role="region" aria-label="Carte des publications"></div>
+    </main>
+    <section class="publication-list" aria-live="polite" aria-atomic="true" aria-relevant="additions removals">
+
+      <div id="articles-container" class="article-list"></div>
+    </section>
+  </div>
+  
+  

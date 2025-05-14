@@ -1,0 +1,71 @@
+stages:
+  - cleanup
+  - build
+  - deploy
+
+cleanup:
+  stage: cleanup
+  script:
+    - echo "Cleaning Docker cache and temporary files"
+    - rm -rf node_modules
+    - rm -rf dist
+    - docker system prune -af || true
+  rules:
+    - when: always
+
+
+build-job:
+  stage: build 
+  image: node:20
+  script:
+    - hostname                         # affiche le nom d’hôte Linux
+    - uname -a                         # noyau et architecture
+    - cat /etc/hostname  
+    - echo "Building the Project with Angular"
+    - npm cache clean --force
+    - npm ci
+    - npm run build 
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 30 days
+
+
+
+
+deploy-dev:
+  stage: deploy
+  image: alpine:latest
+  dependencies:
+    - build-job
+  script:
+    - echo "Deploying to development server..."
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$DEV_SERVER "mkdir -p /home/$SSH_USER/app_front"
+    - scp -o StrictHostKeyChecking=no -r . $SSH_USER@$DEV_SERVER:/home/$SSH_USER/app_front/temp
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$DEV_SERVER "bash /home/$SSH_USER/app_front/deploy.sh"
+  only:
+    - main
+
+deploy-prod:
+  stage: deploy
+  image: alpine:latest
+  dependencies:
+    - build-job
+  script:
+    - echo "Deploying to production server..."
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $PROD_SERVER >> ~/.ssh/known_hosts
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$PROD_SERVER "mkdir -p /home/$SSH_USER/app_front"
+    - scp -o StrictHostKeyChecking=no -r . $SSH_USER@$PROD_SERVER:/home/$SSH_USER/app_front/temp
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$PROD_SERVER "bash /home/$SSH_USER/app_front/deploy.sh"
+  only:
+    - main
+  when: manual

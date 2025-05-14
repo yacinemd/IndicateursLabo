@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run Prod",
+            "request": "launch",
+            "mainClass": "groupe7.indicateurs.IndicateursLaboApplication",
+            "args": [],
+            "vmArgs": "-Dspring.profiles.active=prod",
+            "projectName": "indicateurs"
+        },
+        {
+            "type": "java",
+            "name": "Run Dev",
+            "request": "launch",
+            "mainClass": "groupe7.indicateurs.IndicateursLaboApplication",
+            "args": [],
+            "vmArgs": "-Dspring.profiles.active=dev",
+            "projectName": "indicateurs"
+        }
+    ]
+}

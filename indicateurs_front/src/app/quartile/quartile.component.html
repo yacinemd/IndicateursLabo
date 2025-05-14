@@ -1,0 +1,158 @@
+<!-- quartile.component.html -->
+<div class="container">
+  <h2>Quartiles de revue</h2>
+
+  <div class="search-container">
+    <!-- Recherche par titre + autocomplétion -->
+    <div class="search-field">
+      <label for="title">Titre de la revue:</label>
+      <input
+        id="title"
+        type="search"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="searchTitle()"
+        placeholder="Rechercher par titre"
+        class="search-input" />
+      <div class="revue-list" *ngIf="uniqueTitles.length > 0">
+        <ul>
+          <li
+            *ngFor="let t of uniqueTitles"
+            (click)="
+              searchQuery = t;
+              uniqueTitles = [];
+            ">
+            {{ t }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Recherche & autocomplétion publisher -->
+    <div class="search-field">
+      <label for="publisher">Publisher:</label>
+      <input
+        id="publisher"
+        type="search"
+        [(ngModel)]="publisherQuery"
+        (ngModelChange)="searchPublisher()"
+        placeholder="Rechercher par éditeur"
+        class="search-input" />
+      <div class="revue-list" *ngIf="uniquePublishers.length > 0">
+        <ul>
+          <li
+            *ngFor="let pub of uniquePublishers"
+            (click)="
+              publisherQuery = pub;
+              uniquePublishers = [];
+            ">
+            {{ pub }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <button (click)="search()" class="search-button">Rechercher</button>
+    <button (click)="resetSearch()" class="reset-button">Réinitialiser</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Chargement en cours...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="revueInfo" class="revue-info">
+    <h3>{{ revueInfo.titre }}</h3>
+    <p>Publisher: {{ revueInfo.publisher }}</p>
+  </div>
+
+  <div *ngIf="quartiles.length > 0" class="heatmap-container">
+    <h3>Tous les quartiles</h3>
+    <div class="heatmap">
+      <div class="y-axis">
+        <div *ngFor="let d of uniqueDomaines" class="domaine-label">
+          {{ d }}
+        </div>
+      </div>
+      <div class="grid-container">
+        <div class="heatmap-grid">
+          <div *ngFor="let d of uniqueDomaines" class="heatmap-row">
+            <div
+              *ngFor="let y of years"
+              class="heatmap-cell"
+              [ngStyle]="getCellStyle(d, y)"
+              [class.has-data]="getEntryForDomaineAndYear(d, y)"
+              (mouseenter)="hoverCell(d, y)"
+              (mouseleave)="hoverCell(null, null)">
+            </div>
+          </div>
+        </div>
+        <div class="x-axis">
+          <div
+            *ngFor="let y of years"
+            class="year-label"
+            [class.hidden]="!shouldDisplayYear(y)">
+            {{ y }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="hoveredCell" class="cell-details">
+      <h4>Détails</h4>
+      <p><strong>Année:</strong> {{ hoveredCell.annee }}</p>
+      <p><strong>Quartile:</strong> {{ hoveredCell.quartile }}</p>
+      <p><strong>Domaine:</strong> {{ hoveredCell.domaine }}</p>
+    </div>
+
+    <div class="legend">
+      <h4>Quartiles</h4>
+      <div class="legend-items">
+        <div *ngFor="let q of allQuartiles" class="legend-item">
+          <div
+            class="legend-color"
+            [ngStyle]="{ 'background-color': getQuartileColor(q) }">
+          </div>
+          <span>{{ q }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="bestQuartiles.length > 0" class="best-quartiles-container">
+    <h3>Meilleurs quartiles par année</h3>
+    <div class="chart-container">
+      <div class="y-axis-labels">
+        <div class="y-label">Q1</div>
+        <div class="y-label">Q2</div>
+        <div class="y-label">Q3</div>
+        <div class="y-label">Q4</div>
+      </div>
+      <svg
+        class="chart"
+        [attr.width]="bestQuartiles.length * 80 + 50"
+        height="180">
+        <line x1="0" y1="25" x2="100%" y2="25" class="grid-line" />
+        <line x1="0" y1="50" x2="100%" y2="50" class="grid-line" />
+        <line x1="0" y1="75" x2="100%" y2="75" class="grid-line" />
+        <line x1="0" y1="100" x2="100%" y2="100" class="grid-line" />
+        <path [attr.d]="getPathData()" class="line-path" />
+        <ng-container *ngFor="let q of bestQuartiles; let i = index">
+          <g>
+            <circle
+              [attr.cx]="getPointPosition(q, i).x"
+              [attr.cy]="getPointPosition(q, i).y"
+              r="6"
+              [attr.fill]="getQuartileColor(q.quartile)"
+              class="data-point" />
+            <text
+              [attr.x]="getPointPosition(q, i).x"
+              [attr.y]="140"
+              text-anchor="middle"
+              [class.hidden]="!shouldDisplayYear(q.annee)"
+              class="year-label">
+              {{ q.annee }}
+            </text>
+          </g>
+        </ng-container>
+      </svg>
+    </div>
+  </div>
+</div>

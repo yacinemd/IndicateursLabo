@@ -1,0 +1,80 @@
+<!-- Section des filtres -->
+<section class="filters-section">
+  <div class="filter-container">
+    <div class="form-group">
+      <label for="equipe">Équipe :</label>
+      <select id="equipe" [(ngModel)]="selectedEquipe" name="equipe">
+        <option *ngFor="let equipe of equipes" [value]="equipe">{{ equipe }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="type">Type de publication :</label>
+      <select id="type" [(ngModel)]="selectedType" name="type">
+        <option *ngFor="let type of typesPublication" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="onFilterSubmit()" class="btn btn-primary">Filtrer</button>
+      <button type="button" (click)="resetFilters()" class="btn btn-secondary">Réinitialiser</button>
+    </div>
+  </div>
+</section>
+
+<!-- Section des résultats - visible seulement après avoir filtré -->
+<section class="results-section" *ngIf="searchPerformed">
+  <h2>Résultats</h2>
+  <p *ngIf="filteredCount !== null" class="results-count">
+    Nombre de publications : <strong class="publication-count">{{ filteredCount }}</strong>
+  </p>
+
+  <!-- Articles -->
+  <div *ngIf="selectedType === 'Article' && articles.length > 0" class="publications-container">
+    <div *ngFor="let pub of articles" class="article-card">
+      <h3 class="article-card-header">{{ pub.titre }}</h3>
+      <div class="article-card-content">
+        <p class="article-date">Date de publication: {{ pub.date }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conférences -->
+  <div *ngIf="selectedType === 'Conférence' && conferences.length > 0" class="publications-container">
+    <div *ngFor="let pub of conferences" class="conference-card">
+      <h3 class="conference-card-header">{{ pub.titre }}</h3>
+      <div class="conference-card-content">
+        <p class="conference-date">Année: {{ pub.annee }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Livres -->
+  <div *ngIf="selectedType === 'Livre' && livres.length > 0" class="publications-container">
+    <div *ngFor="let pub of livres" class="livre-card">
+      <h3 class="livre-card-header">{{ pub.titre }}</h3>
+      <div class="livre-card-content">
+        <p class="livre-date">Année: {{ pub.annee }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revues -->
+  <div *ngIf="selectedType === 'Revue' && revues.length > 0" class="publications-container">
+    <div *ngFor="let pub of revues" class="revue-card">
+      <h3 class="revue-card-header">{{ pub.titre }}</h3>
+      <div class="revue-card-content">
+        <p class="revue-info">
+          <span class="revue-year">Année: {{ pub.annee }}</span>
+          <span class="revue-publisher">Éditeur: {{ pub.publisher }}</span>
+        </p>
+        <a href="#" (click)="goToQuartile(pub,$event)" class="quartile-link">Voir les quartiles</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aucun résultat - s'affiche uniquement si une recherche a été effectuée et n'a rien trouvé -->
+  <p *ngIf="filteredCount === 0" class="no-results">
+    Aucune publication trouvée avec ces filtres.
+  </p>
+</section>

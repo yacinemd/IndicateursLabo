@@ -1,0 +1,18 @@
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let personnel of personnelList">
+            <td>{{ personnel.id}}</td>
+            <td>{{ personnel.nom}}</td>
+            <td>{{ personnel.prenom}}</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>

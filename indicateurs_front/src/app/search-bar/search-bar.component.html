@@ -1,0 +1,95 @@
+<div class="search-container">
+  <mat-form-field appearance="outline" class="search-type-selector">
+    <mat-label>Type</mat-label>
+    <mat-select [(ngModel)]="searchType" required>
+      <mat-option value="articles">Articles</mat-option>
+      <mat-option value="revues">Revues</mat-option>
+      <mat-option value="conferences">Conférences</mat-option>
+      <mat-option value="chercheurs">Personnel</mat-option>
+      <mat-option value="livres">Livres</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div id="search-bar">
+    <input
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+      (keydown)="onKeydown($event)"
+      placeholder="Rechercher..."
+      aria-label="Recherche"
+      name="searchQuery"
+    />
+    <span class="clear-icon" *ngIf="searchQuery" (click)="clearSearch()">&#10005;</span>
+    <button type="submit" (click)="onSearch()">
+      <img src="assets/images/search.png" alt="Rechercher" />
+    </button>
+  </div>
+</div>
+
+ 
+
+
+<div id="results-container">
+  <div *ngIf="searchType === 'articles' && articleList.length > 0">
+    <div class="article-card" *ngFor="let a of articleList">
+      <div class="article-card-header">
+        <p>{{ a.titre }} - {{ a.date }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searchType === 'revues' && revueList.length > 0">
+    
+    <div class="revue-card" *ngFor="let r of revueList">
+      <div class="revue-card-header">
+        <p>{{ r.titre }} - {{ r.annee }} - {{r.publisher}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searchType === 'conferences' && conferenceList.length > 0">
+    
+    <div class="conference-card" *ngFor="let c of conferenceList">
+      <div class="conference-card-header">
+        <p>{{ c.titre }} - {{ c.annee }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searchType === 'livres' && livreList.length > 0">
+    <div class="livre-card" *ngFor="let l of livreList">
+      <div class="livre-card-header">
+        <p>{{l.titre}} - {{l.annee}}</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="searchType === 'chercheurs' && (chercheurList.length > 0 || doctorantList.length > 0 || autrePosteList.length > 0)">
+    <div class="personnel-card" *ngFor="let p of chercheurList">
+      <div class="personnel-card-header">
+        <p>{{ p.nom }} - {{ p.prenom }} - {{ p.id }} - {{ p.statut }}</p>
+      </div>
+    </div>
+    <div class="personnel-card" *ngFor="let p of doctorantList">
+      <div class="personnel-card-header">
+        <p>{{ p.nom }} - {{ p.prenom }} - {{ p.id }} - {{ p.statut }}</p>
+      </div>
+    </div>
+    <div class="personnel-card" *ngFor="let p of autrePosteList">
+      <div class="personnel-card-header">
+        <p>{{ p.nom }} - {{ p.prenom }} - {{ p.id }} - {{ p.statut }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-results">
+  <div *ngIf="(articleList.length === 0 && searchType === 'articles') ||
+  (revueList.length === 0 && searchType === 'revues') ||
+  (conferenceList.length === 0 && searchType === 'conferences') ||
+  (livreList.length === 0 && searchType === 'livres') ||
+  (chercheurList.length === 0 && searchType === 'chercheurs' && doctorantList.length === 0 && autrePosteList.length === 0)">
+<p *ngIf="searchQuery">Aucun résultat trouvé pour <span class="highlight">"{{ searchQuery }}"</span></p>
+</div>
+</div>
+

@@ -1,0 +1,59 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build
+  image: maven:3.9.8-eclipse-temurin-21
+  script:
+    - echo "Building the project with Maven"
+    - mvn clean package -Dmaven.test.skip=true
+  artifacts:
+    paths:
+      - target/*.jar
+    expire_in: 30 days
+
+test-job:
+  stage: test
+  image: maven:3.9.8-eclipse-temurin-21
+  script:
+    - echo "Running tests for the project..."
+    - mvn test
+
+deploy-dev:
+  stage: deploy
+  image: alpine:latest
+  dependencies:
+    - build-job
+  script:
+    - echo "Deploying to development server..."
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$DEV_SERVER "mkdir -p /home/$SSH_USER/app"
+    - scp -o StrictHostKeyChecking=no target/*.jar $SSH_USER@$DEV_SERVER:/home/$SSH_USER/app/temp
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$DEV_SERVER "bash /home/$SSH_USER/app/deploy.sh"
+  only:
+    - main
+
+deploy-prod:
+  stage: deploy
+  image: alpine:latest
+  dependencies:
+    - build-job
+  script:
+    - echo "Deploying to production server..."
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $PROD_SERVER >> ~/.ssh/known_hosts
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$PROD_SERVER "mkdir -p /home/$SSH_USER/app"
+    - scp -o StrictHostKeyChecking=no target/*.jar $SSH_USER@$PROD_SERVER:/home/$SSH_USER/app/temp
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$PROD_SERVER "bash /home/$SSH_USER/app/deploy.sh"
+  only:
+    - main
+  when: manual
